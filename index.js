@@ -11,19 +11,13 @@ const INDEX = 4;
 
 async function run() {
   const { page, browser } = await connect({
-    headless: true, // 🔥 obrigatório no Render
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-gpu",
-      "--single-process"
-    ],
+    headless: false, // 🔥 obrigatório no Render
+    args: ["--start-maximized"],
     turnstile: true,
     // proxy: PROXY[INDEX] || false,
     customConfig: {},
     connectOption: {
-      defaultViewport: { width: 1280, height: 800 },
+      defaultViewport: null,
     },
     plugins: [],
   });
@@ -64,16 +58,3 @@ async function run() {
     await browser.close();
   }
 }
-
-app.get("/", (req, res) => {
-  res.send("Bot ativo");
-});
-
-app.get("/run", async (req, res) => {
-  run();
-  res.send("Executando...");
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Servidor rodando");
-});
