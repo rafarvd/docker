@@ -58,3 +58,16 @@ async function run() {
     await browser.close();
   }
 }
+
+app.get("/", (req, res) => {
+  res.send("Bot ativo");
+});
+
+app.get("/run", async (req, res) => {
+  run();
+  res.send("Executando...");
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Servidor rodando");
+});
