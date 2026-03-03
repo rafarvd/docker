@@ -2,6 +2,7 @@ FROM node:20-bullseye
 
 RUN apt-get update && apt-get install -y \
   chromium \
+  xvfb \
   libnss3 \
   libatk-bridge2.0-0 \
   libgtk-3-0 \
@@ -15,11 +16,11 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm install --omit=dev
 
 COPY . .
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV NODE_ENV=production
 
-CMD ["node", "index.js"]
+CMD ["sh", "-c", "xvfb-run --auto-servernum -- node --trace-warnings index.js"]
