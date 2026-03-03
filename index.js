@@ -31,7 +31,7 @@ async function run() {
   try {
     await page.goto(URL, { waitUntil: "networkidle2" });
 
-    await page.waitForTimeout(5000);
+    await new Promise((r) => setTimeout(r, 5000));
 
     await page.type("#address", ADDRESS);
 
@@ -49,13 +49,13 @@ async function run() {
         await page.waitForSelector("circle", { timeout: 2000 });
         await page.click("circle");
       } catch (e) {}
-      await page.waitForTimeout(400);
+      await new Promise((r) => setTimeout(r, 400));
     }
 
-    await page.waitForTimeout(1000);
-    // await page.click("button[type='button'] > span");
+    await new Promise((r) => setTimeout(r, 1000));
+    await page.click("button[type='button'] > span");
 
-    await page.waitForTimeout(1000);
+    await new Promise((r) => setTimeout(r, 1000));
     await page.screenshot({ path: "screen.png" });
 
   } catch (e) {
