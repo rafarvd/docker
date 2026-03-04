@@ -12,8 +12,21 @@ const INDEX = 4;
 async function run() {
   const { page, browser } = await connect({
     headless: false, // 🔥 obrigatório no Render
-    args: ["--start-maximized"],
+    args: [
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-extensions",
+      "--disable-images",
+      "--disable-web-security",
+      "--disable-features=IsolateOrigins,site-per-process",
+    ],
+    headless: false,
     turnstile: true,
+    disableXvfb: false,
+    ignoreAllFlags: false,
+
     // proxy: PROXY[INDEX] || false,
     customConfig: {},
     connectOption: {
@@ -29,9 +42,9 @@ async function run() {
 
     await page.type("#address", ADDRESS);
 
-    const value = await page.$eval("#address", el => el.value);
+    const value = await page.$eval("#address", (el) => el.value);
     if (value !== ADDRESS) {
-      await page.$eval("#address", el => (el.value = ""));
+      await page.$eval("#address", (el) => (el.value = ""));
       await page.type("#address", ADDRESS);
     }
 
@@ -51,7 +64,6 @@ async function run() {
 
     await new Promise((r) => setTimeout(r, 1000));
     await page.screenshot({ path: "screen.png" });
-
   } catch (e) {
     console.error("erro", e);
   } finally {
@@ -64,7 +76,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/run", async (req, res) => {
-  run();
+  await run();
   res.send("Executando...");
 });
 
