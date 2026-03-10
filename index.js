@@ -5,6 +5,10 @@ const WORKFLOW = "main.yml";
 const GH_TOKEN = process.env.GH_TOKEN;
 const PORT = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.get("/run/:user/:repo/:min/:max", async (req, res) => {
   try {
     const user = req.params.user;
